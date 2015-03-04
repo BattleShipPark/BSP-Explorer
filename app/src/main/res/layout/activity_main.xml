@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:a="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     a:layout_width="match_parent"
@@ -10,17 +11,19 @@
     tools:context=".MainActivity">
 
     <TextView
-        a:id="@+id/textView"
+        a:id="@+id/topView"
         a:layout_width="wrap_content"
         a:layout_height="wrap_content"
         a:text="New Text"
         a:textSize="16sp" />
 
     <android.support.v7.widget.RecyclerView
+        a:id="@+id/contentsView"
         a:layout_width="match_parent"
         a:layout_height="match_parent" />
 
     <LinearLayout
+        a:id="@+id/bottomView"
         a:layout_width="match_parent"
         a:layout_height="wrap_content"
         a:orientation="horizontal">

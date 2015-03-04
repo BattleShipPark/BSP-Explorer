@@ -1,24 +1,45 @@
 package com.battleship_park.bsp_explorer;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity implements MainActivityPresenter.ActivityAccessible {
+    @ViewById(R.id.topView)
+    protected TextView topTextView;
+
+    @ViewById(R.id.contentsView)
+    protected RecyclerView contentsRecyclerView;
+
+    @ViewById(R.id.bottomView)
+    protected ViewGroup bottomViewGroup;
+
     private MainActivityPresenter activityPresenter;
     private MainActivityModel activityModel;
+    private RecyclerView.Adapter contentsAdapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @AfterViews
+    protected void onViewCreated() {
+        contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        initData();
+        activityModel = new MainActivityModel();
+        activityPresenter = new MainActivityPresenter(this, activityModel);
+
+        contentsAdapter = new MainActivityContentsAdapter(activityModel);
+        contentsRecyclerView.setAdapter(contentsAdapter);
+
+        activityPresenter.showRoot();
     }
 
-    private void initData() {
-        activityPresenter = new MainActivityPresenter(this);
-        activityModel = new MainActivityModel();
+    @Override
+    public void refresh() {
+        contentsAdapter.notifyDataSetChanged();
     }
 }

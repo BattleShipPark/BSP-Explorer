@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    a:layout_width="match_parent"
+    a:layout_height="32dp"
+    a:layout_marginLeft="@dimen/activity_horizontal_margin"
+    a:layout_marginRight="@dimen/activity_horizontal_margin"
+    a:orientation="horizontal"
+    tools:context=".MainActivity">
+
+    <ImageView
+        a:id="@+id/iconImageView"
+        a:layout_width="32dp"
+        a:layout_height="32dp"
+        a:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+    <TextView
+        a:id="@+id/fileNameTextView"
+        a:layout_width="match_parent"
+        a:layout_height="match_parent"
+        a:layout_marginRight="@dimen/activity_horizontal_margin"
+        a:layout_toLeftOf="@+id/fileSizeTextView"
+        a:layout_toRightOf="@id/iconImageView"
+        a:gravity="center_vertical"
+        a:text="File Name"
+        a:textSize="28sp" />
+
+    <TextView
+        a:id="@id/fileSizeTextView"
+        a:layout_width="wrap_content"
+        a:layout_height="match_parent"
+        a:layout_marginRight="@dimen/activity_horizontal_margin"
+        a:layout_toLeftOf="@+id/modifiedDateTextView"
+        a:gravity="center_vertical"
+        a:text="File Size"
+        a:textSize="12sp" />
+
+    <TextView
+        a:id="@+id/modifiedDateTextView"
+        a:layout_width="wrap_content"
+        a:layout_height="match_parent"
+        a:layout_alignParentRight="true"
+        a:gravity="center_vertical"
+        a:text="2015. 3. 3"
+        a:textSize="12sp" />
+
+</RelativeLayout>
