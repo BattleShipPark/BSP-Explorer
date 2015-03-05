@@ -12,12 +12,16 @@ public class MainActivityPresenter {
         this.model = activityModel;
     }
 
-    public void showRoot() {
-        model.currentPath = File.listRoots()[0];
-        model.currentChildren = model.currentPath.list();
+    public void goTo(File absolutePath) {
+        model.currentPath = absolutePath;
+        model.currentChildren = absolutePath.list();
         Arrays.sort(model.currentChildren);
 
         activityAccessible.refresh();
+    }
+
+    public void goToRoot() {
+        goTo(File.listRoots()[0]);
     }
 
     public static interface ActivityAccessible {

@@ -5,9 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivityContentsViewHolder> {
+    private final MainActivityPresenter activityPresenter;
     private final MainActivityModel activityModel;
 
-    public MainActivityContentsAdapter(MainActivityModel activityModel) {
+    public MainActivityContentsAdapter(MainActivityPresenter activityPresenter, MainActivityModel activityModel) {
+        this.activityPresenter = activityPresenter;
         this.activityModel = activityModel;
     }
 
@@ -15,7 +17,7 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
     public MainActivityContentsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = View.inflate(viewGroup.getContext(), R.layout.list_item_main, null);
 
-        return new MainActivityContentsViewHolder(view);
+        return new MainActivityContentsViewHolder(view, activityPresenter);
     }
 
     @Override

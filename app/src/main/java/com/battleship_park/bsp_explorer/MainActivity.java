@@ -32,10 +32,10 @@ public class MainActivity extends Activity implements MainActivityPresenter.Acti
         activityModel = new MainActivityModel();
         activityPresenter = new MainActivityPresenter(this, activityModel);
 
-        contentsAdapter = new MainActivityContentsAdapter(activityModel);
+        contentsAdapter = new MainActivityContentsAdapter(activityPresenter, activityModel);
         contentsRecyclerView.setAdapter(contentsAdapter);
 
-        activityPresenter.showRoot();
+        activityPresenter.goToRoot();
     }
 
     @Override

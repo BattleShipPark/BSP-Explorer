@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     a:layout_width="match_parent"
-    a:layout_height="32dp"
+    a:layout_height="wrap_content"
+    a:layout_marginBottom="@dimen/list_item_vertical_margin"
     a:layout_marginLeft="@dimen/activity_horizontal_margin"
     a:layout_marginRight="@dimen/activity_horizontal_margin"
+    a:layout_marginTop="@dimen/list_item_vertical_margin"
     a:orientation="horizontal"
     tools:context=".MainActivity">
 
@@ -12,26 +14,28 @@
         a:id="@+id/iconImageView"
         a:layout_width="32dp"
         a:layout_height="32dp"
+        a:layout_centerVertical="true"
         a:layout_marginRight="@dimen/activity_horizontal_margin" />
 
     <TextView
         a:id="@+id/fileNameTextView"
         a:layout_width="match_parent"
-        a:layout_height="match_parent"
-        a:layout_marginRight="@dimen/activity_horizontal_margin"
-        a:layout_toLeftOf="@+id/fileSizeTextView"
+        a:layout_height="wrap_content"
+        a:layout_alignParentTop="true"
+        a:layout_marginBottom="@dimen/activity_horizontal_margin"
         a:layout_toRightOf="@id/iconImageView"
-        a:gravity="center_vertical"
+        a:ellipsize="end"
+        a:singleLine="true"
         a:text="File Name"
-        a:textSize="28sp" />
+        a:textSize="20sp" />
 
     <TextView
-        a:id="@id/fileSizeTextView"
+        a:id="@+id/fileSizeTextView"
         a:layout_width="wrap_content"
-        a:layout_height="match_parent"
+        a:layout_height="wrap_content"
+        a:layout_alignParentBottom="true"
         a:layout_marginRight="@dimen/activity_horizontal_margin"
-        a:layout_toLeftOf="@+id/modifiedDateTextView"
-        a:gravity="center_vertical"
+        a:layout_toRightOf="@id/iconImageView"
         a:text="File Size"
         a:textSize="12sp" />
 
@@ -39,8 +43,8 @@
         a:id="@+id/modifiedDateTextView"
         a:layout_width="wrap_content"
         a:layout_height="match_parent"
+        a:layout_alignParentBottom="true"
         a:layout_alignParentRight="true"
-        a:gravity="center_vertical"
         a:text="2015. 3. 3"
         a:textSize="12sp" />
 
