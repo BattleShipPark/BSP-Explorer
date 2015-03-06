@@ -3,4 +3,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="ready_to_finish_activity">Press Back key one more time to finish</string>
 </resources>

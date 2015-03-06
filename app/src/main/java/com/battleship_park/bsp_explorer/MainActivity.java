@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -36,6 +37,20 @@ public class MainActivity extends Activity implements MainActivityPresenter.Acti
         contentsRecyclerView.setAdapter(contentsAdapter);
 
         activityPresenter.goToRoot();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!activityPresenter.goToParent()) {
+            if (activityPresenter.isReadyToFinish())
+                super.onBackPressed();
+            else {
+                Toast toast = Toast.makeText(this, R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
+                toast.show();
+
+                activityPresenter.setReadyToFinish();
+            }
+        }
     }
 
     @Override

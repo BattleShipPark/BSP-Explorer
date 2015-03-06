@@ -28,6 +28,6 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
 
     @Override
     public int getItemCount() {
-        return activityModel.currentChildren.length;
+        return activityModel.currentChildrenAbsolutePath.size();
     }
 }

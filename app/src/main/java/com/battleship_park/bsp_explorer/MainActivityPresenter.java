@@ -2,10 +2,16 @@ package com.battleship_park.bsp_explorer;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.GregorianCalendar;
 
 public class MainActivityPresenter {
+    private static final int INTERVAL_TO_FINISH = 2000;
+
     private final ActivityAccessible activityAccessible;
     private final MainActivityModel model;
+
+    private long timeToReadyToFinish = 0L;
 
     public MainActivityPresenter(ActivityAccessible activityAccessible, MainActivityModel activityModel) {
         this.activityAccessible = activityAccessible;
@@ -13,15 +19,44 @@ public class MainActivityPresenter {
     }
 
     public void goTo(File absolutePath) {
-        model.currentPath = absolutePath;
-        model.currentChildren = absolutePath.list();
-        Arrays.sort(model.currentChildren);
+        model.currentAbsolutePath = absolutePath;
+
+        String[] children = absolutePath.list();
+        Arrays.sort(children, new Comparator<String>() {
+            @Override
+            public int compare(String lhs, String rhs) {
+                return lhs.compareToIgnoreCase(rhs);
+            }
+        });
+
+        /* relative path to absolute path */
+        model.currentChildrenAbsolutePath.clear();
+        for (String path : children)
+            model.currentChildrenAbsolutePath.add(new File(absolutePath, path));
 
         activityAccessible.refresh();
     }
 
     public void goToRoot() {
         goTo(File.listRoots()[0]);
+    }
+
+    public boolean goToParent() {
+        if (null == model.currentAbsolutePath.getParentFile())
+            return false;
+
+        goTo(model.currentAbsolutePath.getParentFile());
+        return true;
+    }
+
+    public boolean isReadyToFinish() {
+        if (GregorianCalendar.getInstance().getTimeInMillis() - timeToReadyToFinish <= INTERVAL_TO_FINISH)
+            return true;
+        return false;
+    }
+
+    public void setReadyToFinish() {
+        timeToReadyToFinish = GregorianCalendar.getInstance().getTimeInMillis();
     }
 
     public static interface ActivityAccessible {

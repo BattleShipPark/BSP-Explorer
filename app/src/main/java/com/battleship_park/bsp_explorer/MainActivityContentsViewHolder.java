@@ -41,7 +41,7 @@ public class MainActivityContentsViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(MainActivityModel activityModel, int pos) {
-        File file = new File(activityModel.currentChildren[pos]);
+        File file = activityModel.currentChildrenAbsolutePath.get(pos);
 
         if (file.isDirectory())
             iconImageView.setImageResource(R.drawable.folder_100);
