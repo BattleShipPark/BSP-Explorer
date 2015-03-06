@@ -1,4 +1,4 @@
-package com.battleship_park.bsp_explorer;
+package com.battleshippark.bsp_explorer;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

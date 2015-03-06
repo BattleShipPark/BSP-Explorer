@@ -1,4 +1,4 @@
-package com.battleship_park.bsp_explorer;
+package com.battleshippark.bsp_explorer;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.AndroidTestCase;
