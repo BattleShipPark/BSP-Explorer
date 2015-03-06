@@ -12,7 +12,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity implements MainActivityPresenter.ActivityAccessible {
+public class MainActivity extends Activity {
     @ViewById(R.id.topView)
     protected TextView topTextView;
 
@@ -31,7 +31,7 @@ public class MainActivity extends Activity implements MainActivityPresenter.Acti
         contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         activityModel = new MainActivityModel();
-        activityPresenter = new MainActivityPresenter(this, activityModel);
+        activityPresenter = new MainActivityPresenter(new ActivityAccessible(), activityModel);
 
         contentsAdapter = new MainActivityContentsAdapter(activityPresenter, activityModel);
         contentsRecyclerView.setAdapter(contentsAdapter);
@@ -41,20 +41,23 @@ public class MainActivity extends Activity implements MainActivityPresenter.Acti
 
     @Override
     public void onBackPressed() {
-        if (!activityPresenter.goToParent()) {
-            if (activityPresenter.isReadyToFinish())
-                super.onBackPressed();
-            else {
-                Toast toast = Toast.makeText(this, R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
-                toast.show();
-
-                activityPresenter.setReadyToFinish();
-            }
-        }
+        activityPresenter.onBackPressed();
     }
 
-    @Override
-    public void refresh() {
-        contentsAdapter.notifyDataSetChanged();
+    private class ActivityAccessible implements MainActivityPresenter.ActivityAccessible {
+        @Override
+        public void finish() {
+            MainActivity.this.finish();
+        }
+
+        @Override
+        public void refresh() {
+            contentsAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void showToast(int stringResId, int duration) {
+            Toast.makeText(MainActivity.this, stringResId, duration).show();
+        }
     }
 }

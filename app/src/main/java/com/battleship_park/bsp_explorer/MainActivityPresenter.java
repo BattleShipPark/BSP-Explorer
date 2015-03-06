@@ -1,5 +1,7 @@
 package com.battleship_park.bsp_explorer;
 
+import android.widget.Toast;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -59,7 +61,23 @@ public class MainActivityPresenter {
         timeToReadyToFinish = GregorianCalendar.getInstance().getTimeInMillis();
     }
 
+    public void onBackPressed() {
+        if (!goToParent()) {
+            if (isReadyToFinish())
+                activityAccessible.finish();
+            else {
+                activityAccessible.showToast(R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
+
+                setReadyToFinish();
+            }
+        }
+    }
+
     public static interface ActivityAccessible {
+        void finish();
+
         void refresh();
+
+        void showToast(int stringResId, int duration);
     }
 }
