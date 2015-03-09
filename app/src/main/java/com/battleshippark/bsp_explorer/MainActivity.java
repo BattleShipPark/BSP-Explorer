@@ -17,7 +17,10 @@ public class MainActivity extends Activity {
     protected TextView topTextView;
 
     @ViewById(R.id.contentsView)
-    protected RecyclerView contentsRecyclerView;
+    protected EmptyRecyclerView contentsRecyclerView;
+
+    @ViewById(R.id.emptyTextView)
+    protected TextView emptyTextView;
 
     @ViewById(R.id.bottomView)
     protected ViewGroup bottomViewGroup;
@@ -35,6 +38,7 @@ public class MainActivity extends Activity {
 
         contentsAdapter = new MainActivityContentsAdapter(activityPresenter, activityModel);
         contentsRecyclerView.setAdapter(contentsAdapter);
+        contentsRecyclerView.setEmptyView(emptyTextView);
 
         activityPresenter.goToRoot();
     }

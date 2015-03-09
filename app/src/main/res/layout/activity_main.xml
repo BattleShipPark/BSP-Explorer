@@ -25,11 +25,20 @@
         a:layout_height="1dp"
         a:background="#bcc2c6" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.battleshippark.bsp_explorer.EmptyRecyclerView
         a:id="@+id/contentsView"
         a:layout_width="match_parent"
         a:layout_height="0dp"
         a:layout_weight="1" />
+
+    <TextView
+        a:id="@+id/emptyTextView"
+        a:layout_width="match_parent"
+        a:layout_height="0dp"
+        a:layout_weight="1"
+        a:gravity="center"
+        a:text="@string/empty_directory"
+        a:textSize="20sp" />
 
     <LinearLayout
         a:id="@+id/bottomView"

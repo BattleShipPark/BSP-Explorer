@@ -15,7 +15,7 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
     }
 
     @Override
-    public MainActivityContentsViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public MainActivityContentsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = View.inflate(viewGroup.getContext(), R.layout.list_item_main, null);
 
         return new MainActivityContentsViewHolder(view, activityPresenter);
