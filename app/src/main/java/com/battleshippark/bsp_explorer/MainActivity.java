@@ -53,6 +53,8 @@ public class MainActivity extends Activity {
         @Override
         public void refresh() {
             contentsAdapter.notifyDataSetChanged();
+
+            topTextView.setText(activityModel.currentAbsolutePath.getAbsolutePath());
         }
 
         @Override

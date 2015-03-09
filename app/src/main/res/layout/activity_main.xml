@@ -5,22 +5,31 @@
     a:layout_height="match_parent"
     a:orientation="vertical"
     a:paddingBottom="@dimen/activity_vertical_margin"
-    a:paddingLeft="@dimen/activity_horizontal_margin"
-    a:paddingRight="@dimen/activity_horizontal_margin"
     a:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
     <TextView
         a:id="@+id/topView"
-        a:layout_width="wrap_content"
+        a:layout_width="match_parent"
         a:layout_height="wrap_content"
+        a:layout_marginBottom="@dimen/list_item_vertical_margin"
+        a:ellipsize="start"
+        a:paddingLeft="@dimen/activity_horizontal_margin"
+        a:paddingRight="@dimen/activity_horizontal_margin"
+        a:singleLine="true"
         a:text="New Text"
         a:textSize="16sp" />
+
+    <View
+        a:layout_width="match_parent"
+        a:layout_height="1dp"
+        a:background="#bcc2c6" />
 
     <android.support.v7.widget.RecyclerView
         a:id="@+id/contentsView"
         a:layout_width="match_parent"
-        a:layout_height="match_parent" />
+        a:layout_height="0dp"
+        a:layout_weight="1" />
 
     <LinearLayout
         a:id="@+id/bottomView"

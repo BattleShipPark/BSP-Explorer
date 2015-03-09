@@ -23,18 +23,22 @@ public class MainActivityPresenter {
     public void goTo(File absolutePath) {
         model.currentAbsolutePath = absolutePath;
 
-        String[] children = absolutePath.list();
-        Arrays.sort(children, new Comparator<String>() {
-            @Override
-            public int compare(String lhs, String rhs) {
-                return lhs.compareToIgnoreCase(rhs);
-            }
-        });
-
-        /* relative path to absolute path */
         model.currentChildrenAbsolutePath.clear();
-        for (String path : children)
-            model.currentChildrenAbsolutePath.add(new File(absolutePath, path));
+
+        String[] children = absolutePath.list();
+        if (children != null) { /* maybe because of permission? (internal storage) */
+            Arrays.sort(children, new Comparator<String>() {
+                @Override
+                public int compare(String lhs, String rhs) {
+                    return lhs.compareToIgnoreCase(rhs);
+                }
+            });
+
+
+            /* relative path to absolute path */
+            for (String path : children)
+                model.currentChildrenAbsolutePath.add(new File(absolutePath, path));
+        }
 
         activityAccessible.refresh();
     }
