@@ -15,7 +15,7 @@ public class MainActivityContentsViewHolder extends RecyclerView.ViewHolder {
     private TextView fileSizeTextView;
     private TextView lastModifiedTextView;
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy.dd.MM");
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
     private File absolutePath;
 
