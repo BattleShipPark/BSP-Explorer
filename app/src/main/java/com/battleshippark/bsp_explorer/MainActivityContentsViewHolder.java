@@ -5,6 +5,8 @@ import android.view.View;
 
 import junit.framework.Assert;
 
+import org.lucasr.twowayview.ItemSelectionSupport;
+
 import java.io.File;
 
 public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHolder {
@@ -13,7 +15,7 @@ public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHo
     protected MainActivityContentsViewHolder(View itemView, final MainActivityPresenter activityPresenter) {
         super(itemView);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
+/*        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivityContentsViewHolder holder = (MainActivityContentsViewHolder) v.getTag();
@@ -21,12 +23,12 @@ public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHo
                 if (holder.absolutePath.isDirectory())
                     activityPresenter.goTo(holder.absolutePath);
             }
-        });
+        });*/
 
         itemView.setTag(this);
     }
 
-    public abstract void bind(MainActivityModel activityModel, int pos);
+    public abstract void bind(MainActivityModel activityModel, ItemSelectionSupport itemSelection, int pos);
 
     public static MainActivityContentsViewHolder create(View itemView, MainActivityPresenter activityPresenter) {
         switch (MainActivityModel.getInstance().viewMode) {

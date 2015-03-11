@@ -48,4 +48,14 @@
         a:text="2015. 3. 3"
         a:textSize="12sp" />
 
+    <CheckBox
+        a:id="@+id/checkBox"
+        a:layout_width="24dp"
+        a:layout_height="24dp"
+        a:layout_alignParentRight="true"
+        a:layout_alignParentTop="true"
+        a:button="@null"
+        a:background="@drawable/selector_main_list_item_checked"
+        a:checked="false" />
+
 </RelativeLayout>

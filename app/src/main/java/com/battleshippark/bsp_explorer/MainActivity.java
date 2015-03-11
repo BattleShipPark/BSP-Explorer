@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +14,8 @@ import junit.framework.Assert;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.lucasr.twowayview.ItemClickSupport;
+import org.lucasr.twowayview.ItemSelectionSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
 import org.lucasr.twowayview.widget.ListLayoutManager;
 
@@ -30,9 +33,13 @@ public class MainActivity extends BaseActivity {
     @ViewById(R.id.bottomLayout)
     protected ViewGroup bottomViewGroup;
 
+    protected BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
+    protected ItemSelectionSupport itemSelection;
+    protected RecyclerView.Adapter contentsAdapter;
+
     private MainActivityPresenter activityPresenter;
-    private RecyclerView.Adapter contentsAdapter;
     private MainActivityBottomController bottomController;
+
 
     @Override
     protected void restoreIntent(Intent intent) {
@@ -55,11 +62,45 @@ public class MainActivity extends BaseActivity {
 
         activityPresenter = new MainActivityPresenter(new ActivityAccessible(), MainActivityModel.getInstance());
 
-        contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance());
+        itemSelection = ItemSelectionSupport.addTo(contentsRecyclerView);
+
+        contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance(), itemSelection);
         contentsRecyclerView.setAdapter(contentsAdapter);
         contentsRecyclerView.setEmptyView(emptyTextView);
 
-        bottomController = new MainActivityBottomController(this, bottomViewGroup, BottomLayoutMode.NORMAL);
+        final ItemClickSupport itemClick = ItemClickSupport.addTo(contentsRecyclerView);
+        itemClick.setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView recyclerView, View view, int position, long id) {
+                ItemSelectionSupport itemSelection = ItemSelectionSupport.from(contentsRecyclerView);
+                if (itemSelection.getChoiceMode() == ItemSelectionSupport.ChoiceMode.MULTIPLE) {
+                    boolean checked = itemSelection.isItemChecked(position);
+                    itemSelection.setItemChecked(position, checked);
+                    contentsAdapter.notifyDataSetChanged();
+                } else {
+                    MainActivityContentsViewHolder holder = (MainActivityContentsViewHolder) view.getTag();
+
+                    if (holder.absolutePath.isDirectory())
+                        activityPresenter.goTo(holder.absolutePath);
+                }
+            }
+        });
+
+        itemClick.setOnItemLongClickListener(new ItemClickSupport.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(RecyclerView recyclerView, View view, int position, long id) {
+                ItemSelectionSupport itemSelection = ItemSelectionSupport.from(contentsRecyclerView);
+                if (itemSelection.getChoiceMode() != ItemSelectionSupport.ChoiceMode.MULTIPLE) {
+                    itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.MULTIPLE);
+                    contentsAdapter.notifyDataSetChanged();
+
+                    setBottomLayoutMode(BottomLayoutMode.MULTISELECT);
+                }
+                return true;
+            }
+        });
+
+        bottomController = new MainActivityBottomController(this, bottomViewGroup);
 
         activityPresenter.goToRoot();
     }
@@ -71,7 +112,8 @@ public class MainActivity extends BaseActivity {
     }
 
     protected void setBottomLayoutMode(BottomLayoutMode mode) {
-
+        bottomLayoutMode = mode;
+        bottomController.update();
     }
 
     void setLayoutManager() {

@@ -7,13 +7,17 @@ import android.view.ViewGroup;
 
 import junit.framework.Assert;
 
+import org.lucasr.twowayview.ItemSelectionSupport;
+
 public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivityContentsViewHolder> {
     private final MainActivityPresenter activityPresenter;
     private final MainActivityModel activityModel;
+    private final ItemSelectionSupport itemSelection;
 
-    public MainActivityContentsAdapter(MainActivityPresenter activityPresenter, MainActivityModel activityModel) {
+    public MainActivityContentsAdapter(MainActivityPresenter activityPresenter, MainActivityModel activityModel, ItemSelectionSupport itemSelection) {
         this.activityPresenter = activityPresenter;
         this.activityModel = activityModel;
+        this.itemSelection = itemSelection;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
 
     @Override
     public void onBindViewHolder(MainActivityContentsViewHolder viewHolder, int i) {
-        viewHolder.bind(activityModel, i);
+        viewHolder.bind(activityModel, itemSelection, i);
     }
 
 

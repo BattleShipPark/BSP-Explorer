@@ -10,25 +10,25 @@ import android.widget.TextView;
 
 import junit.framework.Assert;
 
+import org.lucasr.twowayview.ItemSelectionSupport;
+
 public class MainActivityBottomController {
     private final MainActivity activity;
     private final ViewGroup layout;
-    private final MainActivity.BottomLayoutMode mode;
 
-    public MainActivityBottomController(MainActivity activity, ViewGroup bottomViewGroup, MainActivity.BottomLayoutMode mode) {
+    public MainActivityBottomController(MainActivity activity, ViewGroup bottomViewGroup) {
         this.activity = activity;
         this.layout = bottomViewGroup;
-        this.mode = mode;
 
         update();
     }
 
-    private void update() {
+    protected void update() {
         layout.removeAllViews();
 
         View v;
 
-        switch (mode) {
+        switch (activity.bottomLayoutMode) {
             case NORMAL:
                 v = addView(R.drawable.plus_100, R.string.menu_new);
                 v.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +68,16 @@ public class MainActivityBottomController {
                     @Override
                     public void onClick(View v) {
 
+                    }
+                });
+                v = addView(R.drawable.cancel_100, R.string.menu_cancel);
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        activity.itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.NONE);
+                        activity.contentsAdapter.notifyDataSetChanged();
+
+                        activity.setBottomLayoutMode(MainActivity.BottomLayoutMode.NORMAL);
                     }
                 });
                 break;

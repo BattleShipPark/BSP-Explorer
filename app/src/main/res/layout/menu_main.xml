@@ -6,12 +6,13 @@
     a:background="@drawable/selector_list_item_main"
     a:gravity="center_horizontal"
     a:orientation="vertical"
-    a:paddingBottom="@dimen/activity_bottom_margin">
+    a:paddingBottom="@dimen/activity_bottom_margin"
+    a:paddingTop="@dimen/activity_bottom_margin">
 
     <ImageView
         a:id="@+id/image"
-        a:layout_width="48dp"
-        a:layout_height="48dp"
+        a:layout_width="40dp"
+        a:layout_height="40dp"
         a:src="@drawable/plus_100" />
 
     <TextView

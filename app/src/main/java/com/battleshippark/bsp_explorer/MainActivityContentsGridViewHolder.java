@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.lucasr.twowayview.ItemSelectionSupport;
+
 import java.io.File;
 
 public class MainActivityContentsGridViewHolder extends MainActivityContentsViewHolder {
@@ -18,7 +20,7 @@ public class MainActivityContentsGridViewHolder extends MainActivityContentsView
     }
 
     @Override
-    public void bind(MainActivityModel activityModel, int pos) {
+    public void bind(MainActivityModel activityModel, ItemSelectionSupport itemSelection, int pos) {
         File file = activityModel.currentChildrenAbsolutePath.get(pos);
 
         if (file.isDirectory())
