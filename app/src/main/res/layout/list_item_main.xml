@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     a:layout_width="match_parent"
     a:layout_height="wrap_content"
-    a:paddingBottom="@dimen/list_item_vertical_margin"
-    a:paddingTop="@dimen/list_item_vertical_margin"
     a:background="@drawable/selector_list_item_main"
-    a:orientation="horizontal"
+    a:paddingBottom="@dimen/list_item_vertical_margin"
     a:paddingLeft="@dimen/activity_horizontal_margin"
     a:paddingRight="@dimen/activity_horizontal_margin"
+    a:paddingTop="@dimen/list_item_vertical_margin"
     tools:context=".MainActivity">
 
     <ImageView
@@ -23,7 +22,6 @@
         a:layout_width="match_parent"
         a:layout_height="wrap_content"
         a:layout_alignParentTop="true"
-        a:layout_marginBottom="@dimen/activity_horizontal_margin"
         a:layout_toRightOf="@id/iconImageView"
         a:ellipsize="end"
         a:singleLine="true"
@@ -35,6 +33,7 @@
         a:layout_width="wrap_content"
         a:layout_height="wrap_content"
         a:layout_alignParentBottom="true"
+        a:layout_below="@id/fileNameTextView"
         a:layout_marginRight="@dimen/activity_horizontal_margin"
         a:layout_toRightOf="@id/iconImageView"
         a:text="File Size"
