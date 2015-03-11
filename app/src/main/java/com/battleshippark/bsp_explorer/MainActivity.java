@@ -22,23 +22,24 @@ public class MainActivity extends Activity {
     @ViewById(R.id.emptyTextView)
     protected TextView emptyTextView;
 
-    @ViewById(R.id.bottomView)
+    @ViewById(R.id.bottomLayout)
     protected ViewGroup bottomViewGroup;
 
     private MainActivityPresenter activityPresenter;
-    private MainActivityModel activityModel;
     private RecyclerView.Adapter contentsAdapter;
+    private MainActivityBottomController bottomController;
 
     @AfterViews
     protected void onViewCreated() {
         contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        activityModel = new MainActivityModel();
-        activityPresenter = new MainActivityPresenter(new ActivityAccessible(), activityModel);
+        activityPresenter = new MainActivityPresenter(new ActivityAccessible(), MainActivityModel.getInstance());
 
-        contentsAdapter = new MainActivityContentsAdapter(activityPresenter, activityModel);
+        contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance());
         contentsRecyclerView.setAdapter(contentsAdapter);
         contentsRecyclerView.setEmptyView(emptyTextView);
+
+        bottomController = new MainActivityBottomController(this, bottomViewGroup, BottomLayoutMode.NORMAL);
 
         activityPresenter.goToRoot();
     }
@@ -48,7 +49,16 @@ public class MainActivity extends Activity {
         activityPresenter.onBackPressed();
     }
 
+    protected void setBottomLayoutMode(BottomLayoutMode mode) {
+
+    }
+
+    public static enum BottomLayoutMode {
+        NORMAL, MULTISELECT, COPIED
+    }
+
     private class ActivityAccessible implements MainActivityPresenter.ActivityAccessible {
+
         @Override
         public void finish() {
             MainActivity.this.finish();
@@ -58,12 +68,13 @@ public class MainActivity extends Activity {
         public void refresh() {
             contentsAdapter.notifyDataSetChanged();
 
-            topTextView.setText(activityModel.currentAbsolutePath.getAbsolutePath());
+            topTextView.setText(MainActivityModel.getInstance().currentAbsolutePath.getAbsolutePath());
         }
 
         @Override
         public void showToast(int stringResId, int duration) {
             Toast.makeText(MainActivity.this, stringResId, duration).show();
         }
+
     }
 }

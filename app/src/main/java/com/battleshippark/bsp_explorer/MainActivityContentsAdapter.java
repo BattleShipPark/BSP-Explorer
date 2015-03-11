@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import junit.framework.Assert;
+
 public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivityContentsViewHolder> {
     private final MainActivityPresenter activityPresenter;
     private final MainActivityModel activityModel;
@@ -16,9 +18,20 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
 
     @Override
     public MainActivityContentsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = View.inflate(viewGroup.getContext(), R.layout.list_item_main, null);
+        View view = null;
 
-        return new MainActivityContentsViewHolder(view, activityPresenter);
+        switch (activityModel.viewMode) {
+            case LIST:
+                view = View.inflate(viewGroup.getContext(), R.layout.list_item_main, null);
+                break;
+            case GRID:
+                view = View.inflate(viewGroup.getContext(), R.layout.grid_item_main, null);
+                break;
+            default:
+                Assert.fail();
+        }
+
+        return MainActivityContentsViewHolder.create(view, activityPresenter);
     }
 
     @Override

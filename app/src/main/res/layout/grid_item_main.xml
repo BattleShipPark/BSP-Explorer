@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:a="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    a:layout_width="match_parent"
+    a:layout_height="wrap_content"
+    a:background="@drawable/selector_list_item_main"
+    a:padding="@dimen/grid_item_vertical_margin"
+    tools:context=".MainActivity">
+
+    <ImageView
+        a:id="@+id/iconImageView"
+        a:layout_width="40dp"
+        a:layout_height="40dp"
+        a:layout_centerHorizontal="true"
+        a:layout_marginBottom="@dimen/list_item_vertical_margin" />
+
+    <TextView
+        a:id="@+id/fileNameTextView"
+        a:layout_width="wrap_content"
+        a:layout_height="wrap_content"
+        a:layout_alignParentBottom="true"
+        a:layout_below="@id/iconImageView"
+        a:layout_centerHorizontal="true"
+        a:ellipsize="end"
+        a:maxLines="2"
+        a:singleLine="false"
+        a:text="File Name"
+        a:textSize="12sp" />
+
+</RelativeLayout>
