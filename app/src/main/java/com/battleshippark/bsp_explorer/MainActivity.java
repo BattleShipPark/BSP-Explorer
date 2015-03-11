@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity {
     @AfterViews
     protected void onViewCreated() {
         setLayoutManager();
+
         activityPresenter = new MainActivityPresenter(new ActivityAccessible(), MainActivityModel.getInstance());
 
         contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance());
