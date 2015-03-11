@@ -1,18 +1,22 @@
 package com.battleshippark.bsp_explorer;
 
-import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import junit.framework.Assert;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
     @ViewById(R.id.topView)
     protected TextView topTextView;
 
@@ -29,10 +33,24 @@ public class MainActivity extends Activity {
     private RecyclerView.Adapter contentsAdapter;
     private MainActivityBottomController bottomController;
 
+    @Override
+    protected void restoreIntent(Intent intent) {
+
+    }
+
+    @Override
+    protected void restoreInstanceState(Bundle savedInstanceState) {
+        MainActivityModel.getInstance().restoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void saveInstanceState(Bundle outState) {
+        MainActivityModel.getInstance().saveInstanceState(outState);
+    }
+
     @AfterViews
     protected void onViewCreated() {
-        contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        setLayoutManager();
         activityPresenter = new MainActivityPresenter(new ActivityAccessible(), MainActivityModel.getInstance());
 
         contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance());
@@ -44,6 +62,7 @@ public class MainActivity extends Activity {
         activityPresenter.goToRoot();
     }
 
+
     @Override
     public void onBackPressed() {
         activityPresenter.onBackPressed();
@@ -51,6 +70,19 @@ public class MainActivity extends Activity {
 
     protected void setBottomLayoutMode(BottomLayoutMode mode) {
 
+    }
+
+    void setLayoutManager() {
+        switch (MainActivityModel.getInstance().viewMode) {
+            case LIST:
+                contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                break;
+            case GRID:
+                contentsRecyclerView.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.contents_span_count)));
+                break;
+            default:
+                Assert.fail();
+        }
     }
 
     public static enum BottomLayoutMode {

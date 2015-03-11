@@ -2,8 +2,6 @@ package com.battleshippark.bsp_explorer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -116,11 +114,11 @@ public class MainActivityBottomController {
                 switch (which) {
                     case 0:
                         MainActivityModel.getInstance().viewMode = MainActivityModel.ViewMode.LIST;
-                        activity.contentsRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                        activity.setLayoutManager();
                         break;
                     case 1:
                         MainActivityModel.getInstance().viewMode = MainActivityModel.ViewMode.GRID;
-                        activity.contentsRecyclerView.setLayoutManager(new GridLayoutManager(activity, activity.getResources().getInteger(R.integer.contents_span_count)));
+                        activity.setLayoutManager();
                         break;
                     default:
                         Assert.fail();
