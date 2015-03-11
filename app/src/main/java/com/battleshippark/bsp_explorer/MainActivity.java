@@ -100,6 +100,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void refresh() {
             contentsAdapter.notifyDataSetChanged();
+            contentsRecyclerView.scrollToPosition(0);
 
             topTextView.setText(MainActivityModel.getInstance().currentAbsolutePath.getAbsolutePath());
         }
