@@ -3,15 +3,16 @@ package com.battleshippark.bsp_explorer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
+
+import org.lucasr.twowayview.widget.TwoWayView;
 
 /*
  * Imported from here: https://gist.github.com/adelnizamutdinov/31c8f054d1af4588dc5c
  * And modified
  */
-public class EmptyRecyclerView extends RecyclerView {
+public class EmptyRecyclerView extends TwoWayView {
     @Nullable
     View emptyView;
 

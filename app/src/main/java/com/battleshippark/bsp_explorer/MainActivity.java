@@ -3,7 +3,6 @@ package com.battleshippark.bsp_explorer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,6 +13,8 @@ import junit.framework.Assert;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.lucasr.twowayview.TwoWayLayoutManager;
+import org.lucasr.twowayview.widget.ListLayoutManager;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
     void setLayoutManager() {
         switch (MainActivityModel.getInstance().viewMode) {
             case LIST:
-                contentsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+                contentsRecyclerView.setLayoutManager(new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL));
                 break;
             case GRID:
                 contentsRecyclerView.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.contents_span_count)));

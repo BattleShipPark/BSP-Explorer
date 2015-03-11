@@ -33,6 +33,8 @@ dependencies {
     compile "org.androidannotations:androidannotations-api:3.2"
 
     compile "com.android.support:recyclerview-v7:21.0.0"
+    compile 'org.lucasr.twowayview:core:1.0.0-SNAPSHOT@aar'
+    compile 'org.lucasr.twowayview:layouts:1.0.0-SNAPSHOT@aar'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
