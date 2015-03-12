@@ -13,6 +13,7 @@ public class MainActivityModel {
     File currentAbsolutePath;
     List<File> currentChildrenAbsolutePath;
     ViewMode viewMode = ViewMode.LIST;
+    BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
 
     public MainActivityModel() {
         currentChildrenAbsolutePath = new ArrayList<>();
@@ -29,6 +30,11 @@ public class MainActivityModel {
     public void saveInstanceState(Bundle outState) {
         outState.putSerializable(KEY_VIEW_MODE, viewMode);
     }
+
+    public static enum BottomLayoutMode {
+        NORMAL, MULTISELECT, COPIED
+    }
+
 
     public static enum ViewMode {
         LIST, GRID

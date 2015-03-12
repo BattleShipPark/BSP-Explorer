@@ -55,6 +55,10 @@ public class MainActivityPresenter {
         return true;
     }
 
+    public void refreshDirectory() {
+        goTo(model.currentAbsolutePath);
+    }
+
     public boolean isReadyToFinish() {
         if (GregorianCalendar.getInstance().getTimeInMillis() - timeToReadyToFinish <= INTERVAL_TO_FINISH)
             return true;
@@ -66,18 +70,24 @@ public class MainActivityPresenter {
     }
 
     public void onBackPressed() {
-        if (!goToParent()) {
-            if (isReadyToFinish())
-                activityAccessible.finish();
-            else {
-                activityAccessible.showToast(R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
+        if (MainActivityModel.getInstance().bottomLayoutMode == MainActivityModel.BottomLayoutMode.NORMAL) {
+            if (!goToParent()) {
+                if (isReadyToFinish())
+                    activityAccessible.finish();
+                else {
+                    activityAccessible.showToast(R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
 
-                setReadyToFinish();
+                    setReadyToFinish();
+                }
             }
+        } else {
+            activityAccessible.cancelMultiSelectMode();
         }
     }
 
     public static interface ActivityAccessible {
+        void cancelMultiSelectMode();
+
         void finish();
 
         void refresh();

@@ -33,11 +33,10 @@ public class MainActivity extends BaseActivity {
     @ViewById(R.id.bottomLayout)
     protected ViewGroup bottomViewGroup;
 
-    protected BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
     protected ItemSelectionSupport itemSelection;
     protected RecyclerView.Adapter contentsAdapter;
 
-    private MainActivityPresenter activityPresenter;
+    protected MainActivityPresenter activityPresenter;
     private MainActivityBottomController bottomController;
 
 
@@ -91,10 +90,7 @@ public class MainActivity extends BaseActivity {
             public boolean onItemLongClick(RecyclerView recyclerView, View view, int position, long id) {
                 ItemSelectionSupport itemSelection = ItemSelectionSupport.from(contentsRecyclerView);
                 if (itemSelection.getChoiceMode() != ItemSelectionSupport.ChoiceMode.MULTIPLE) {
-                    itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.MULTIPLE);
-                    contentsAdapter.notifyDataSetChanged();
-
-                    setBottomLayoutMode(BottomLayoutMode.MULTISELECT);
+                    setMultiSelectMode(position);
                 }
                 return true;
             }
@@ -105,18 +101,18 @@ public class MainActivity extends BaseActivity {
         activityPresenter.goToRoot();
     }
 
-
     @Override
     public void onBackPressed() {
         activityPresenter.onBackPressed();
     }
 
-    protected void setBottomLayoutMode(BottomLayoutMode mode) {
-        bottomLayoutMode = mode;
+
+    protected void setBottomLayoutMode(MainActivityModel.BottomLayoutMode mode) {
+        MainActivityModel.getInstance().bottomLayoutMode = mode;
         bottomController.update();
     }
 
-    void setLayoutManager() {
+    protected void setLayoutManager() {
         switch (MainActivityModel.getInstance().viewMode) {
             case LIST:
                 contentsRecyclerView.setLayoutManager(new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL));
@@ -129,11 +125,27 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public static enum BottomLayoutMode {
-        NORMAL, MULTISELECT, COPIED
+    protected void cancelMultiSelectMode() {
+        itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.NONE);
+        itemSelection.clearChoices();
+        contentsAdapter.notifyDataSetChanged();
+
+        setBottomLayoutMode(MainActivityModel.BottomLayoutMode.NORMAL);
+    }
+
+    private void setMultiSelectMode(int position) {
+        itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.MULTIPLE);
+        itemSelection.setItemChecked(position, true);
+        contentsAdapter.notifyDataSetChanged();
+
+        setBottomLayoutMode(MainActivityModel.BottomLayoutMode.MULTISELECT);
     }
 
     private class ActivityAccessible implements MainActivityPresenter.ActivityAccessible {
+        @Override
+        public void cancelMultiSelectMode() {
+            MainActivity.this.cancelMultiSelectMode();
+        }
 
         @Override
         public void finish() {

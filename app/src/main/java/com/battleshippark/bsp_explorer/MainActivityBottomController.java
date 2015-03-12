@@ -2,6 +2,7 @@ package com.battleshippark.bsp_explorer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,7 +11,7 @@ import android.widget.TextView;
 
 import junit.framework.Assert;
 
-import org.lucasr.twowayview.ItemSelectionSupport;
+import java.io.File;
 
 public class MainActivityBottomController {
     private final MainActivity activity;
@@ -28,7 +29,7 @@ public class MainActivityBottomController {
 
         View v;
 
-        switch (activity.bottomLayoutMode) {
+        switch (MainActivityModel.getInstance().bottomLayoutMode) {
             case NORMAL:
                 v = addView(R.drawable.plus_100, R.string.menu_new);
                 v.setOnClickListener(new View.OnClickListener() {
@@ -67,17 +68,14 @@ public class MainActivityBottomController {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        deleteFiles();
                     }
                 });
                 v = addView(R.drawable.cancel_100, R.string.menu_cancel);
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        activity.itemSelection.setChoiceMode(ItemSelectionSupport.ChoiceMode.NONE);
-                        activity.contentsAdapter.notifyDataSetChanged();
-
-                        activity.setBottomLayoutMode(MainActivity.BottomLayoutMode.NORMAL);
+                        activity.cancelMultiSelectMode();
                     }
                 });
                 break;
@@ -101,6 +99,25 @@ public class MainActivityBottomController {
             default:
                 Assert.fail();
         }
+    }
+
+    private void deleteFiles() {
+        final SparseBooleanArray arr = activity.itemSelection.getCheckedItemPositions();
+
+        new AlertDialog.Builder(activity).setMessage(activity.getResources().getQuantityString(R.plurals.confirm_delete, arr.size(), arr.size()))
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int index = 0; index < arr.size(); index++) {
+                            File file = MainActivityModel.getInstance().currentChildrenAbsolutePath.get(arr.keyAt(index));
+                            file.delete();
+                        }
+                        activity.activityPresenter.refreshDirectory();
+                        activity.cancelMultiSelectMode();
+                    }
+                })
+                .show();
     }
 
     private View addView(int drawableResId, int stringResId) {
