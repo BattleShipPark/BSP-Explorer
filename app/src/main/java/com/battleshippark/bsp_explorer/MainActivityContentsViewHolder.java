@@ -10,13 +10,13 @@ import org.lucasr.twowayview.ItemSelectionSupport;
 import java.io.File;
 
 public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHolder {
-    protected File absolutePath;
+	protected File absolutePath;
 
-    protected MainActivityContentsViewHolder(View itemView, final MainActivityPresenter activityPresenter) {
-        super(itemView);
+	protected MainActivityContentsViewHolder(View itemView, final MainActivityPresenter activityPresenter) {
+		super(itemView);
 
 /*        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
+			@Override
             public void onClick(View v) {
                 MainActivityContentsViewHolder holder = (MainActivityContentsViewHolder) v.getTag();
 
@@ -25,20 +25,20 @@ public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHo
             }
         });*/
 
-        itemView.setTag(this);
-    }
+		itemView.setTag(this);
+	}
 
-    public abstract void bind(MainActivityModel activityModel, ItemSelectionSupport itemSelection, int pos);
+	public abstract void bind(MainActivityModel activityModel, ItemSelectionSupport itemSelection, int pos);
 
-    public static MainActivityContentsViewHolder create(View itemView, MainActivityPresenter activityPresenter) {
-        switch (MainActivityModel.getInstance().viewMode) {
-            case LIST:
-                return new MainActivityContentsListViewHolder(itemView, activityPresenter);
-            case GRID:
-                return new MainActivityContentsGridViewHolder(itemView, activityPresenter);
-            default:
-                Assert.fail();
-                return null;
-        }
-    }
+	public static MainActivityContentsViewHolder create(View itemView, MainActivityPresenter activityPresenter) {
+		switch (MainActivityModel.getInstance().viewMode) {
+			case LIST:
+				return new MainActivityContentsListViewHolder(itemView, activityPresenter);
+			case GRID:
+				return new MainActivityContentsGridViewHolder(itemView, activityPresenter);
+			default:
+				Assert.fail();
+				return null;
+		}
+	}
 }

@@ -13,57 +13,57 @@ import org.lucasr.twowayview.widget.TwoWayView;
  * And modified
  */
 public class EmptyRecyclerView extends TwoWayView {
-    @Nullable
-    View emptyView;
+	@Nullable
+	View emptyView;
 
-    public EmptyRecyclerView(Context context) {
-        super(context);
-    }
+	public EmptyRecyclerView(Context context) {
+		super(context);
+	}
 
-    public EmptyRecyclerView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public EmptyRecyclerView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public EmptyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+	public EmptyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
 
-    void checkIfEmpty() {
-        if (emptyView != null) {
-            if (getAdapter().getItemCount() > 0) {
-                setVisibility(VISIBLE);
-                emptyView.setVisibility(GONE);
-            } else {
-                setVisibility(GONE);
-                emptyView.setVisibility(VISIBLE);
-            }
-        }
-    }
+	void checkIfEmpty() {
+		if (emptyView != null) {
+			if (getAdapter().getItemCount() > 0) {
+				setVisibility(VISIBLE);
+				emptyView.setVisibility(GONE);
+			} else {
+				setVisibility(GONE);
+				emptyView.setVisibility(VISIBLE);
+			}
+		}
+	}
 
-    final
-    @NonNull
-    AdapterDataObserver observer = new AdapterDataObserver() {
-        @Override
-        public void onChanged() {
-            super.onChanged();
-            checkIfEmpty();
-        }
-    };
+	final
+	@NonNull
+	AdapterDataObserver observer = new AdapterDataObserver() {
+		@Override
+		public void onChanged() {
+			super.onChanged();
+			checkIfEmpty();
+		}
+	};
 
-    @Override
-    public void setAdapter(@Nullable Adapter adapter) {
-        final Adapter oldAdapter = getAdapter();
-        if (oldAdapter != null) {
-            oldAdapter.unregisterAdapterDataObserver(observer);
-        }
-        super.setAdapter(adapter);
-        if (adapter != null) {
-            adapter.registerAdapterDataObserver(observer);
-        }
-    }
+	@Override
+	public void setAdapter(@Nullable Adapter adapter) {
+		final Adapter oldAdapter = getAdapter();
+		if (oldAdapter != null) {
+			oldAdapter.unregisterAdapterDataObserver(observer);
+		}
+		super.setAdapter(adapter);
+		if (adapter != null) {
+			adapter.registerAdapterDataObserver(observer);
+		}
+	}
 
-    public void setEmptyView(@Nullable View emptyView) {
-        this.emptyView = emptyView;
-        checkIfEmpty();
-    }
+	public void setEmptyView(@Nullable View emptyView) {
+		this.emptyView = emptyView;
+		checkIfEmpty();
+	}
 }
