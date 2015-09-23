@@ -93,7 +93,11 @@ public class MainActivityTest extends AndroidTestCase {
     }
 
     private class ActivityAccessible implements MainActivityPresenter.ActivityAccessible {
-        @Override
+		@Override
+		public void cancelMultiSelectMode() {
+		}
+
+		@Override
         public void finish() {
             isActivityFinished = true;
         }

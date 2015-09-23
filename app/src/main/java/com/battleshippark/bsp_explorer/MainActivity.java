@@ -2,7 +2,6 @@ package com.battleshippark.bsp_explorer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,9 @@ import org.androidannotations.annotations.ViewById;
 import org.lucasr.twowayview.ItemClickSupport;
 import org.lucasr.twowayview.ItemSelectionSupport;
 import org.lucasr.twowayview.TwoWayLayoutManager;
+import org.lucasr.twowayview.widget.GridLayoutManager;
 import org.lucasr.twowayview.widget.ListLayoutManager;
+import org.lucasr.twowayview.widget.SpannableGridLayoutManager;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
@@ -118,7 +119,7 @@ public class MainActivity extends BaseActivity {
                 contentsRecyclerView.setLayoutManager(new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL));
                 break;
             case GRID:
-                contentsRecyclerView.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.contents_span_count)));
+                contentsRecyclerView.setLayoutManager(new SpannableGridLayoutManager(TwoWayLayoutManager.Orientation.VERTICAL, getResources().getInteger(R.integer.contents_span_count), 1));
                 break;
             default:
                 Assert.fail();
