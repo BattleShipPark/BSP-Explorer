@@ -11,6 +11,7 @@ import android.widget.Toast;
 import junit.framework.Assert;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.lucasr.twowayview.ItemClickSupport;
@@ -21,6 +22,12 @@ import org.lucasr.twowayview.widget.SpannableGridLayoutManager;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
+	@Bean
+	protected RxEventModel eventModel;
+
+	@Bean
+	protected MainActivityModel activityModel;
+
 	@ViewById(R.id.topView)
 	protected TextView topTextView;
 
@@ -47,23 +54,25 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void restoreInstanceState(Bundle savedInstanceState) {
-		MainActivityModel.getInstance().restoreInstanceState(savedInstanceState);
+		activityModel.restoreInstanceState(savedInstanceState);
 	}
 
 	@Override
 	protected void saveInstanceState(Bundle outState) {
-		MainActivityModel.getInstance().saveInstanceState(outState);
+		activityModel.saveInstanceState(outState);
 	}
 
 	@AfterViews
 	protected void onViewCreated() {
+		activityModel.setEventModel(eventModel);
+
 		setLayoutManager();
 
-		activityPresenter = new MainActivityPresenter(new ActivityAccessible(), MainActivityModel.getInstance());
+		activityPresenter = new MainActivityPresenter(new ActivityAccessible(), activityModel);
 
 		itemSelection = ItemSelectionSupport.addTo(contentsRecyclerView);
 
-		contentsAdapter = new MainActivityContentsAdapter(activityPresenter, MainActivityModel.getInstance(), itemSelection);
+		contentsAdapter = new MainActivityContentsAdapter(activityPresenter, activityModel, itemSelection);
 		contentsRecyclerView.setAdapter(contentsAdapter);
 		contentsRecyclerView.setEmptyView(emptyTextView);
 
@@ -96,7 +105,7 @@ public class MainActivity extends BaseActivity {
 			}
 		});
 
-		bottomController = new MainActivityBottomController(this, bottomViewGroup);
+		bottomController = new MainActivityBottomController(this, bottomViewGroup, activityModel);
 
 		activityPresenter.goToRoot();
 	}
@@ -108,12 +117,12 @@ public class MainActivity extends BaseActivity {
 
 
 	protected void setBottomLayoutMode(MainActivityModel.BottomLayoutMode mode) {
-		MainActivityModel.getInstance().bottomLayoutMode = mode;
+		activityModel.bottomLayoutMode = mode;
 		bottomController.update();
 	}
 
 	protected void setLayoutManager() {
-		switch (MainActivityModel.getInstance().viewMode) {
+		switch (activityModel.viewMode) {
 			case LIST:
 				contentsRecyclerView.setLayoutManager(new ListLayoutManager(this, TwoWayLayoutManager.Orientation.VERTICAL));
 				break;
@@ -157,7 +166,7 @@ public class MainActivity extends BaseActivity {
 			contentsAdapter.notifyDataSetChanged();
 			contentsRecyclerView.scrollToPosition(0);
 
-			topTextView.setText(MainActivityModel.getInstance().currentAbsolutePath.getAbsolutePath());
+			topTextView.setText(activityModel.currentAbsolutePath.getAbsolutePath());
 		}
 
 		@Override

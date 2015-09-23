@@ -11,19 +11,19 @@ public class MainActivityPresenter {
 	private static final int INTERVAL_TO_FINISH = 2000;
 
 	private final ActivityAccessible activityAccessible;
-	private final MainActivityModel model;
+	private final MainActivityModel activityModel;
 
 	private long timeToReadyToFinish = 0L;
 
 	public MainActivityPresenter(ActivityAccessible activityAccessible, MainActivityModel activityModel) {
 		this.activityAccessible = activityAccessible;
-		this.model = activityModel;
+		this.activityModel = activityModel;
 	}
 
 	public void goTo(File absolutePath) {
-		model.currentAbsolutePath = absolutePath;
+		activityModel.currentAbsolutePath = absolutePath;
 
-		model.currentChildrenAbsolutePath.clear();
+		activityModel.currentChildrenAbsolutePath.clear();
 
 		String[] children = absolutePath.list();
 		if (children != null) { /* maybe because of permission? (internal storage) */
@@ -37,7 +37,7 @@ public class MainActivityPresenter {
 
             /* relative path to absolute path */
 			for (String path : children)
-				model.currentChildrenAbsolutePath.add(new File(absolutePath, path));
+				activityModel.currentChildrenAbsolutePath.add(new File(absolutePath, path));
 		}
 
 		activityAccessible.refresh();
@@ -48,15 +48,15 @@ public class MainActivityPresenter {
 	}
 
 	public boolean goToParent() {
-		if (null == model.currentAbsolutePath.getParentFile())
+		if (null == activityModel.currentAbsolutePath.getParentFile())
 			return false;
 
-		goTo(model.currentAbsolutePath.getParentFile());
+		goTo(activityModel.currentAbsolutePath.getParentFile());
 		return true;
 	}
 
 	public void refreshDirectory() {
-		goTo(model.currentAbsolutePath);
+		goTo(activityModel.currentAbsolutePath);
 	}
 
 	public boolean isReadyToFinish() {
@@ -70,7 +70,7 @@ public class MainActivityPresenter {
 	}
 
 	public void onBackPressed() {
-		if (MainActivityModel.getInstance().bottomLayoutMode == MainActivityModel.BottomLayoutMode.NORMAL) {
+		if (activityModel.bottomLayoutMode == MainActivityModel.BottomLayoutMode.NORMAL) {
 			if (!goToParent()) {
 				if (isReadyToFinish())
 					activityAccessible.finish();

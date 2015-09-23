@@ -30,8 +30,8 @@ public abstract class MainActivityContentsViewHolder extends RecyclerView.ViewHo
 
 	public abstract void bind(MainActivityModel activityModel, ItemSelectionSupport itemSelection, int pos);
 
-	public static MainActivityContentsViewHolder create(View itemView, MainActivityPresenter activityPresenter) {
-		switch (MainActivityModel.getInstance().viewMode) {
+	public static MainActivityContentsViewHolder create(View itemView, MainActivityModel activityModel, MainActivityPresenter activityPresenter) {
+		switch (activityModel.viewMode) {
 			case LIST:
 				return new MainActivityContentsListViewHolder(itemView, activityPresenter);
 			case GRID:

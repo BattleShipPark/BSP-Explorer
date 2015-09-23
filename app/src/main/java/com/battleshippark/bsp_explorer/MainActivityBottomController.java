@@ -16,10 +16,12 @@ import java.io.File;
 public class MainActivityBottomController {
 	private final MainActivity activity;
 	private final ViewGroup layout;
+	private final MainActivityModel activityModel;
 
-	public MainActivityBottomController(MainActivity activity, ViewGroup bottomViewGroup) {
+	public MainActivityBottomController(MainActivity activity, ViewGroup bottomViewGroup, MainActivityModel activityModel) {
 		this.activity = activity;
 		this.layout = bottomViewGroup;
+		this.activityModel = activityModel;
 
 		update();
 	}
@@ -29,7 +31,7 @@ public class MainActivityBottomController {
 
 		View v;
 
-		switch (MainActivityModel.getInstance().bottomLayoutMode) {
+		switch (activityModel.bottomLayoutMode) {
 			case NORMAL:
 				v = addView(R.drawable.plus_100, R.string.menu_new);
 				v.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +112,7 @@ public class MainActivityBottomController {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						for (int index = 0; index < arr.size(); index++) {
-							File file = MainActivityModel.getInstance().currentChildrenAbsolutePath.get(arr.keyAt(index));
+							File file = activityModel.currentChildrenAbsolutePath.get(arr.keyAt(index));
 							file.delete();
 						}
 						activity.activityPresenter.refreshDirectory();
@@ -140,11 +142,11 @@ public class MainActivityBottomController {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 					case 0:
-						MainActivityModel.getInstance().viewMode = MainActivityModel.ViewMode.LIST;
+						activityModel.viewMode = MainActivityModel.ViewMode.LIST;
 						activity.setLayoutManager();
 						break;
 					case 1:
-						MainActivityModel.getInstance().viewMode = MainActivityModel.ViewMode.GRID;
+						activityModel.viewMode = MainActivityModel.ViewMode.GRID;
 						activity.setLayoutManager();
 						break;
 					default:

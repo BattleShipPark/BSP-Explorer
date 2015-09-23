@@ -2,12 +2,14 @@ package com.battleshippark.bsp_explorer;
 
 import android.os.Bundle;
 
+import org.androidannotations.annotations.EBean;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@EBean
 public class MainActivityModel {
-	private static final MainActivityModel INSTANCE = new MainActivityModel();
 	private static final String KEY_VIEW_MODE = "viewMode";
 
 	File currentAbsolutePath;
@@ -15,12 +17,10 @@ public class MainActivityModel {
 	ViewMode viewMode = ViewMode.LIST;
 	BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
 
+	private RxEventModel eventModel;
+
 	public MainActivityModel() {
 		currentChildrenAbsolutePath = new ArrayList<>();
-	}
-
-	public static MainActivityModel getInstance() {
-		return INSTANCE;
 	}
 
 	public void restoreInstanceState(Bundle savedInstanceState) {
@@ -31,12 +31,16 @@ public class MainActivityModel {
 		outState.putSerializable(KEY_VIEW_MODE, viewMode);
 	}
 
-	public static enum BottomLayoutMode {
+	public void setEventModel(RxEventModel eventModel) {
+		this.eventModel = eventModel;
+	}
+
+	public enum BottomLayoutMode {
 		NORMAL, MULTISELECT, COPIED
 	}
 
 
-	public static enum ViewMode {
+	public enum ViewMode {
 		LIST, GRID
 	}
 

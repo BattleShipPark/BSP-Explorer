@@ -35,7 +35,7 @@ public class MainActivityContentsAdapter extends RecyclerView.Adapter<MainActivi
 				Assert.fail();
 		}
 
-		return MainActivityContentsViewHolder.create(view, activityPresenter);
+		return MainActivityContentsViewHolder.create(view, activityModel, activityPresenter);
 	}
 
 	@Override
