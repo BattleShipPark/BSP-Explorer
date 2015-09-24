@@ -6,8 +6,6 @@ import com.squareup.otto.Bus;
 
 import org.androidannotations.annotations.EBean;
 
-import rx.subjects.PublishSubject;
-
 
 @EBean
 public class EventModel {
@@ -57,9 +55,5 @@ public class EventModel {
 		EVENT
 	}
 
-	public static class ActivityObservable {
-		public PublishSubject<Bundle> restoreInstanceState = PublishSubject.create();
-	}
-
-	public ActivityObservable activityObservable = new ActivityObservable();
+	public enum ActivityRefresh {EVENT}
 }

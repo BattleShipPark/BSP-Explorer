@@ -6,7 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.squareup.otto.Subscribe;
 
 import junit.framework.Assert;
 
@@ -66,11 +67,15 @@ public class MainActivity extends BaseActivity {
 
 	@AfterViews
 	protected void onViewCreated() {
+		eventModel.bus.register(this);
+
+		activityModel.setContext(this);
 		activityModel.setEventModel(eventModel);
 
 		setLayoutManager();
 
-		activityPresenter = new MainActivityPresenter(new ActivityAccessible(), activityModel);
+		activityPresenter = new MainActivityPresenter(new ActivityAccessible());
+		activityPresenter.setActivityModel(activityModel);
 
 		itemSelection = ItemSelectionSupport.addTo(contentsRecyclerView);
 
@@ -113,10 +118,35 @@ public class MainActivity extends BaseActivity {
 	}
 
 	@Override
-	public void onBackPressed() {
-		activityPresenter.onBackPressed();
+	protected void onResume() {
+		try {
+			eventModel.bus.unregister(this);
+		} catch (IllegalArgumentException e) {
+		}
+
+		eventModel.bus.register(this);
+		super.onResume();
 	}
 
+	@Override
+	protected void onPause() {
+		eventModel.bus.unregister(this);
+		super.onPause();
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (activityPresenter.onBackPressed())
+			super.onBackPressed();
+	}
+
+	@Subscribe
+	public void refresh(EventModel.ActivityRefresh event) {
+		contentsAdapter.notifyDataSetChanged();
+		contentsRecyclerView.scrollToPosition(0);
+
+		topTextView.setText(activityModel.currentAbsolutePath.getAbsolutePath());
+	}
 
 	protected void setBottomLayoutMode(MainActivityModel.BottomLayoutMode mode) {
 		activityModel.bottomLayoutMode = mode;
@@ -163,18 +193,18 @@ public class MainActivity extends BaseActivity {
 			MainActivity.this.finish();
 		}
 
-		@Override
+/*		@Override
 		public void refresh() {
 			contentsAdapter.notifyDataSetChanged();
 			contentsRecyclerView.scrollToPosition(0);
 
 			topTextView.setText(activityModel.currentAbsolutePath.getAbsolutePath());
-		}
+		}*/
 
-		@Override
+/*		@Override
 		public void showToast(int stringResId, int duration) {
 			Toast.makeText(MainActivity.this, stringResId, duration).show();
-		}
+		}*/
 
 	}
 }

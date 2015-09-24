@@ -23,7 +23,8 @@ public class MainActivityTest extends AndroidTestCase {
     public void setUp() throws Exception {
         super.setUp();
         activityModel = new MainActivityModel();
-        activityPresenter = new MainActivityPresenter(new ActivityAccessible(), activityModel);
+        activityPresenter = new MainActivityPresenter(new ActivityAccessible());
+		activityPresenter.setActivityModel(activityModel);
     }
 
     @Test
@@ -102,12 +103,12 @@ public class MainActivityTest extends AndroidTestCase {
             isActivityFinished = true;
         }
 
-        @Override
+/*        @Override
         public void refresh() {
-        }
+        }*/
 
-        @Override
+/*        @Override
         public void showToast(int stringResId, int duration) {
-        }
+        }*/
     }
 }

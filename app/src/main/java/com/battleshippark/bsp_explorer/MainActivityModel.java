@@ -1,5 +1,7 @@
 package com.battleshippark.bsp_explorer;
 
+import android.content.Context;
+
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.EBean;
@@ -17,7 +19,8 @@ public class MainActivityModel {
 	ViewMode viewMode = ViewMode.LIST;
 	BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
 
-	private EventModel eventModel;
+	EventModel eventModel;
+	Context context;
 
 	public MainActivityModel() {
 		currentChildrenAbsolutePath = new ArrayList<>();
@@ -40,6 +43,10 @@ public class MainActivityModel {
 		this.eventModel = eventModel;
 
 		eventModel.bus.register(this);
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 
 	public enum BottomLayoutMode {

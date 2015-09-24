@@ -11,13 +11,13 @@ public class MainActivityPresenter {
 	private static final int INTERVAL_TO_FINISH = 2000;
 
 	private final ActivityAccessible activityAccessible;
-	private final MainActivityModel activityModel;
+	private MainActivityModel activityModel;
+	private EventModel eventModel;
 
 	private long timeToReadyToFinish = 0L;
 
-	public MainActivityPresenter(ActivityAccessible activityAccessible, MainActivityModel activityModel) {
+	public MainActivityPresenter(ActivityAccessible activityAccessible) {
 		this.activityAccessible = activityAccessible;
-		this.activityModel = activityModel;
 	}
 
 	public void goTo(File absolutePath) {
@@ -40,7 +40,9 @@ public class MainActivityPresenter {
 				activityModel.currentChildrenAbsolutePath.add(new File(absolutePath, path));
 		}
 
-		activityAccessible.refresh();
+
+		eventModel.bus.post(EventModel.ActivityRefresh.EVENT);
+//		activityAccessible.refresh();
 	}
 
 	public void goToRoot() {
@@ -69,13 +71,13 @@ public class MainActivityPresenter {
 		timeToReadyToFinish = GregorianCalendar.getInstance().getTimeInMillis();
 	}
 
-	public void onBackPressed() {
+	public boolean onBackPressed() {
 		if (activityModel.bottomLayoutMode == MainActivityModel.BottomLayoutMode.NORMAL) {
 			if (!goToParent()) {
 				if (isReadyToFinish())
-					activityAccessible.finish();
+					return true;
 				else {
-					activityAccessible.showToast(R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
+					showToast(R.string.ready_to_finish_activity, Toast.LENGTH_SHORT);
 
 					setReadyToFinish();
 				}
@@ -83,15 +85,32 @@ public class MainActivityPresenter {
 		} else {
 			activityAccessible.cancelMultiSelectMode();
 		}
+
+		return false;
 	}
 
-	public static interface ActivityAccessible {
+	public void setActivityModel(MainActivityModel activityModel) {
+		this.activityModel = activityModel;
+
+		if (this.eventModel != null)
+			this.eventModel.bus.unregister(this);
+
+		this.eventModel = activityModel.eventModel;
+
+		eventModel.bus.register(this);
+	}
+
+	public void showToast(int stringResId, int duration) {
+		Toast.makeText(activityModel.context, stringResId, duration).show();
+	}
+
+	public interface ActivityAccessible {
 		void cancelMultiSelectMode();
 
 		void finish();
 
-		void refresh();
+//		void refresh();
 
-		void showToast(int stringResId, int duration);
+//		void showToast(int stringResId, int duration);
 	}
 }
