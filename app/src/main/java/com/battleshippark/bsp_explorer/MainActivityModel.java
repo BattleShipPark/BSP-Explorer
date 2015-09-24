@@ -1,6 +1,6 @@
 package com.battleshippark.bsp_explorer;
 
-import android.os.Bundle;
+import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.EBean;
 
@@ -17,22 +17,29 @@ public class MainActivityModel {
 	ViewMode viewMode = ViewMode.LIST;
 	BottomLayoutMode bottomLayoutMode = BottomLayoutMode.NORMAL;
 
-	private RxEventModel eventModel;
+	private EventModel eventModel;
 
 	public MainActivityModel() {
 		currentChildrenAbsolutePath = new ArrayList<>();
 	}
 
-	public void restoreInstanceState(Bundle savedInstanceState) {
-		viewMode = (ViewMode) savedInstanceState.getSerializable(KEY_VIEW_MODE);
+	@Subscribe
+	public void onRestoreInstanceState(EventModel.ActivityOnRestoreInstanceState state) {
+		viewMode = (ViewMode) state.getSavedInstanceState().getSerializable(KEY_VIEW_MODE);
 	}
 
-	public void saveInstanceState(Bundle outState) {
-		outState.putSerializable(KEY_VIEW_MODE, viewMode);
+	@Subscribe
+	public void onSaveInstanceState(EventModel.ActivityOnSaveInstanceState state) {
+		state.getOutState().putSerializable(KEY_VIEW_MODE, viewMode);
 	}
 
-	public void setEventModel(RxEventModel eventModel) {
+	public void setEventModel(EventModel eventModel) {
+		if (this.eventModel != null)
+			this.eventModel.bus.unregister(this);
+
 		this.eventModel = eventModel;
+
+		eventModel.bus.register(this);
 	}
 
 	public enum BottomLayoutMode {

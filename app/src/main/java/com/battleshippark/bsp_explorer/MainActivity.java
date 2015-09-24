@@ -23,7 +23,7 @@ import org.lucasr.twowayview.widget.SpannableGridLayoutManager;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends BaseActivity {
 	@Bean
-	protected RxEventModel eventModel;
+	protected EventModel eventModel;
 
 	@Bean
 	protected MainActivityModel activityModel;
@@ -54,12 +54,14 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void restoreInstanceState(Bundle savedInstanceState) {
-		activityModel.restoreInstanceState(savedInstanceState);
+		eventModel.bus.post(EventModel.ActivityOnRestoreInstanceState.from(savedInstanceState));
+//		activityModel.restoreInstanceState(savedInstanceState);
 	}
 
 	@Override
 	protected void saveInstanceState(Bundle outState) {
-		activityModel.saveInstanceState(outState);
+		eventModel.bus.post(EventModel.ActivityOnSaveInstanceState.from(outState));
+//		activityModel.saveInstanceState(outState);
 	}
 
 	@AfterViews
